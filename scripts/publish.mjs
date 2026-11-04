@@ -3,6 +3,7 @@
 //
 //   node scripts/publish.mjs            публикува (нужни: IG_TOKEN, MEDIA_BASE)
 //   node scripts/publish.mjs --check    само проверява графика и файловете
+//   node scripts/publish.mjs --verify   проба на ключа и GitHub Pages, без публикуване
 //
 // Instagram API (Unified login, системен ключ без срок): контейнер ->
 // изчакване -> media_publish. Снимките и видеата трябва да са на публичен
@@ -16,6 +17,7 @@ const IG_USER_ID = process.env.IG_USER_ID || '17841466630713895'; // @humanoetic
 const STATE = path.join(ROOT, 'state', 'published.json');
 const LATE_LIMIT_H = 12; // по-стари пропуснати публикации не се пускат сами
 const CHECK = process.argv.includes('--check');
+const VERIFY = process.argv.includes('--verify') || process.env.VERIFY === 'true';
 
 function loadSchedule() {
   const dir = path.join(ROOT, 'schedule');
@@ -133,6 +135,20 @@ async function main() {
   }
   if (!TOKEN) throw new Error('Липсва IG_TOKEN (Settings → Secrets → Actions).');
   if (!MEDIA_BASE) throw new Error('Липсва MEDIA_BASE.');
+
+  if (VERIFY) {
+    // Проба без публикуване: ключ, профил, лимит и достъп до файловете.
+    const me = await api('GET', `/${IG_USER_ID}`, { fields: 'username,media_count' });
+    const lim = await api('GET', `/${IG_USER_ID}/content_publishing_limit`, { fields: 'quota_usage,config' });
+    console.log(`Ключът работи. Профил: @${me.username}, публикации: ${me.media_count}.`);
+    console.log(`Лимит: ${JSON.stringify(lim.data?.[0] || lim)}`);
+    const sample = pending[0] || items[0];
+    if (sample) {
+      await assertPublic(sample.media[0]);
+      console.log(`Файловете са публични: ${url(sample.media[0])}`);
+    }
+    return;
+  }
 
   const due = pending.filter((it) => Date.parse(it.at) <= now);
   if (!due.length) {
