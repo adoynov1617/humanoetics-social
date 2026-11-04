@@ -1,0 +1,47 @@
+name: Публикуване в Instagram
+
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *' # на всеки 15 минути (UTC)
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['schedule/**', 'media/**', 'scripts/**']
+
+# Никога две публикувания едновременно - иначе пост може да излезе два пъти.
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Проверка на графика
+        run: node scripts/publish.mjs --check
+      - name: Публикуване
+        # При push само проверяваме - публикува се по график.
+        if: github.event_name != 'push'
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          MEDIA_BASE: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+        run: node scripts/publish.mjs
+      - name: Запис кое е публикувано
+        if: always() && github.event_name != 'push'
+        run: |
+          if ! git diff --quiet state/; then
+            git config user.name "humanoetics-bot"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add state/
+            git commit -m "Публикувано в Instagram [skip ci]"
+            git pull --rebase --autostash
+            git push
+          fi
