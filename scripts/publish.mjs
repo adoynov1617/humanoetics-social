@@ -14,6 +14,9 @@ import path from 'node:path';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const API = process.env.IG_API || 'https://graph.facebook.com/v23.0';
 const IG_USER_ID = process.env.IG_USER_ID || '17841466630713895'; // @humanoetics
+const FB_PAGE_ID = process.env.FB_PAGE_ID || '1485446367979150'; // Facebook страницата Humanoetics
+// Във Facebook публикуваме само това, което е насрочено след включването му.
+const FACEBOOK_FROM = Date.parse('2026-11-10T19:00:00+02:00');
 const STATE = path.join(ROOT, 'state', 'published.json');
 const LATE_LIMIT_H = 12; // по-стари пропуснати публикации не се пускат сами
 const CHECK = process.argv.includes('--check');
@@ -62,7 +65,7 @@ const url = (m) => `${MEDIA_BASE}/media/${m.split('/').map(encodeURIComponent).j
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function api(method, p, params = {}) {
-  const body = new URLSearchParams({ ...params, access_token: TOKEN });
+  const body = new URLSearchParams({ access_token: TOKEN, ...params });
   const res = method === 'GET' ? await fetch(`${API}${p}?${body}`) : await fetch(`${API}${p}`, { method: 'POST', body });
   const json = await res.json().catch(() => ({}));
   if (!res.ok || json.error) {
@@ -117,6 +120,51 @@ async function publish(userId, it) {
   return { mediaId: id, permalink: info.permalink || null };
 }
 
+// ---- Facebook страницата ----
+// Ключът на системния потребител дава ключ за страницата; с него се публикува.
+let pageToken = null;
+async function fb(method, p, params = {}) {
+  if (!pageToken) {
+    pageToken = (await api('GET', `/${FB_PAGE_ID}`, { fields: 'access_token' })).access_token;
+    if (!pageToken) throw new Error('Няма достъп до Facebook страницата (ключ за страницата).');
+  }
+  return api(method, p, { ...params, access_token: pageToken });
+}
+
+// Във Facebook линкът може да е в самия текст.
+const fbText = (caption = '') => caption.replace(/линкът е в профила\.?/g, 'https://humanoetics.com');
+
+async function publishFacebook(it) {
+  for (const m of it.media) await assertPublic(m);
+  if (/\.(mp4|mov)$/i.test(it.media[0])) throw new Error('Видео във Facebook още не се поддържа.');
+  let postId;
+  if (it.type === 'story') {
+    const photo = await fb('POST', `/${FB_PAGE_ID}/photos`, { url: url(it.media[0]), published: 'false' });
+    postId = (await fb('POST', `/${FB_PAGE_ID}/photo_stories`, { photo_id: photo.id })).post_id;
+  } else if (it.media.length === 1) {
+    postId = (await fb('POST', `/${FB_PAGE_ID}/photos`, { url: url(it.media[0]), message: fbText(it.caption) })).post_id;
+  } else {
+    // Пост с няколко снимки: първо се качват като непубликувани, после се прикачват.
+    const params = { message: fbText(it.caption) };
+    for (const [i, m] of it.media.entries()) {
+      const photo = await fb('POST', `/${FB_PAGE_ID}/photos`, { url: url(m), published: 'false' });
+      params[`attached_media[${i}]`] = JSON.stringify({ media_fbid: photo.id });
+    }
+    postId = (await fb('POST', `/${FB_PAGE_ID}/feed`, params)).id;
+  }
+  const info = postId ? await fb('GET', `/${postId}`, { fields: 'permalink_url' }).catch(() => ({})) : {};
+  return { postId: postId || null, permalink: info.permalink_url || null };
+}
+
+// Всяка публикация е задача за Instagram и (без рийлчетата) за Facebook.
+// В state Instagram е с id-то на публикацията, Facebook – с „#facebook“.
+function tasksFor(it) {
+  const platforms = it.platforms || (it.type === 'reel' ? ['instagram'] : ['instagram', 'facebook']);
+  return platforms
+    .filter((pl) => pl !== 'facebook' || Date.parse(it.at) >= FACEBOOK_FROM)
+    .map((pl) => ({ ...it, platform: pl, key: pl === 'instagram' ? it.id : `${it.id}#${pl}` }));
+}
+
 async function main() {
   const items = loadSchedule();
   const errors = validate(items);
@@ -127,10 +175,10 @@ async function main() {
   const state = JSON.parse(fs.readFileSync(STATE, 'utf8'));
   const done = new Set(state.map((s) => s.id));
   const now = Date.now();
-  const pending = items.filter((it) => !done.has(it.id));
-  console.log(`График: ${items.length} публикации, ${pending.length} предстоят.`);
+  const pending = items.flatMap(tasksFor).filter((t) => !done.has(t.key));
+  console.log(`График: ${items.length} публикации, ${pending.length} предстоят (Instagram и Facebook).`);
   if (CHECK) {
-    for (const it of pending) console.log(`  ${it.at}  ${it.type.padEnd(8)} ${it.id}`);
+    for (const t of pending) console.log(`  ${t.at}  ${t.type.padEnd(8)} ${t.platform.padEnd(9)} ${t.id}`);
     return;
   }
   if (!TOKEN) throw new Error('Липсва IG_TOKEN (Settings → Secrets → Actions).');
@@ -147,6 +195,8 @@ async function main() {
     console.log(`Права: ${perms.data ? perms.data.filter((p) => p.status === 'granted').map((p) => p.permission).join(', ') : perms.error}`);
     const pages = await api('GET', '/me/accounts', { fields: 'id,name,tasks' }).catch((e) => ({ error: e.message }));
     console.log(`Страници: ${pages.data ? pages.data.map((p) => `${p.name} (${p.id}; ${(p.tasks || []).join('/')})`).join(', ') || 'няма' : pages.error}`);
+    const page = await fb('GET', `/${FB_PAGE_ID}`, { fields: 'name,link' }).catch((e) => ({ error: e.message }));
+    console.log(`Facebook: ${page.error || `${page.name} ${page.link || ''}`}`);
     const sample = pending[0] || items[0];
     if (sample) {
       await assertPublic(sample.media[0]);
@@ -158,27 +208,27 @@ async function main() {
   const due = pending.filter((it) => Date.parse(it.at) <= now);
   if (!due.length) {
     const next = pending.sort((a, b) => Date.parse(a.at) - Date.parse(b.at))[0];
-    console.log(next ? `Нищо за публикуване. Следващо: ${next.at} (${next.id})` : 'Нищо за публикуване.');
+    console.log(next ? `Нищо за публикуване. Следващо: ${next.at} (${next.id}, ${next.platform})` : 'Нищо за публикуване.');
     return;
   }
   const me = await api('GET', `/${IG_USER_ID}`, { fields: 'username' });
   console.log(`Профил: @${me.username}`);
 
   let failed = 0;
-  for (const it of due.sort((a, b) => Date.parse(a.at) - Date.parse(b.at))) {
-    const lateH = (now - Date.parse(it.at)) / 36e5;
+  for (const t of due.sort((a, b) => Date.parse(a.at) - Date.parse(b.at))) {
+    const lateH = (now - Date.parse(t.at)) / 36e5;
     if (lateH > LATE_LIMIT_H) {
-      console.log(`Пропуснато (закъсняло с ${lateH.toFixed(1)} ч.): ${it.id}`);
-      state.push({ id: it.id, at: it.at, skipped: 'late', when: new Date().toISOString() });
+      console.log(`Пропуснато (закъсняло с ${lateH.toFixed(1)} ч.): ${t.key}`);
+      state.push({ id: t.key, at: t.at, skipped: 'late', when: new Date().toISOString() });
       continue;
     }
     try {
-      const r = await publish(IG_USER_ID, it);
-      console.log(`Публикувано: ${it.id} → ${r.permalink || r.mediaId}`);
-      state.push({ id: it.id, at: it.at, ...r, when: new Date().toISOString() });
+      const r = t.platform === 'facebook' ? await publishFacebook(t) : await publish(IG_USER_ID, t);
+      console.log(`Публикувано (${t.platform}): ${t.id} → ${r.permalink || r.mediaId || r.postId}`);
+      state.push({ id: t.key, at: t.at, platform: t.platform, ...r, when: new Date().toISOString() });
     } catch (e) {
       failed++;
-      console.error(`Грешка при ${it.id}: ${e.message}`);
+      console.error(`Грешка при ${t.key}: ${e.message}`);
     }
     fs.writeFileSync(STATE, JSON.stringify(state, null, 2) + '\n');
   }
