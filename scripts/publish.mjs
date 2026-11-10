@@ -142,6 +142,11 @@ async function main() {
     const lim = await api('GET', `/${IG_USER_ID}/content_publishing_limit`, { fields: 'quota_usage,config' });
     console.log(`Ключът работи. Профил: @${me.username}, публикации: ${me.media_count}.`);
     console.log(`Лимит: ${JSON.stringify(lim.data?.[0] || lim)}`);
+    // Правата на ключа и Facebook страниците, до които има достъп.
+    const perms = await api('GET', '/me/permissions').catch((e) => ({ error: e.message }));
+    console.log(`Права: ${perms.data ? perms.data.filter((p) => p.status === 'granted').map((p) => p.permission).join(', ') : perms.error}`);
+    const pages = await api('GET', '/me/accounts', { fields: 'id,name,tasks' }).catch((e) => ({ error: e.message }));
+    console.log(`Страници: ${pages.data ? pages.data.map((p) => `${p.name} (${p.id}; ${(p.tasks || []).join('/')})`).join(', ') || 'няма' : pages.error}`);
     const sample = pending[0] || items[0];
     if (sample) {
       await assertPublic(sample.media[0]);
