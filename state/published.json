@@ -75,5 +75,45 @@
     "mediaId": "18113799572589066",
     "permalink": "https://www.instagram.com/stories/humanoetics/4027166482110403616",
     "when": "2026-11-10T07:28:05.970Z"
+  },
+  {
+    "id": "2026-11-types-01-type-reflector-fb#facebook",
+    "at": "2026-11-10T19:13:00+02:00",
+    "platform": "facebook",
+    "postId": "1485446367979150_122096628753550118",
+    "permalink": "https://www.facebook.com/122096628771550118/posts/122096628753550118",
+    "when": "2026-11-10T17:15:15.358Z"
+  },
+  {
+    "id": "2026-11-types-02-type-manifestor-fb#facebook",
+    "at": "2026-11-10T19:13:00+02:00",
+    "platform": "facebook",
+    "postId": "1485446367979150_122096629449550118",
+    "permalink": "https://www.facebook.com/122096628771550118/posts/122096629449550118",
+    "when": "2026-11-10T17:15:25.096Z"
+  },
+  {
+    "id": "2026-11-types-03-type-projector-fb#facebook",
+    "at": "2026-11-10T19:13:00+02:00",
+    "platform": "facebook",
+    "postId": "1485446367979150_122096630115550118",
+    "permalink": "https://www.facebook.com/122096628771550118/posts/122096630115550118",
+    "when": "2026-11-10T17:15:35.208Z"
+  },
+  {
+    "id": "2026-11-types-04-type-manifestinggenerator-fb#facebook",
+    "at": "2026-11-10T19:13:00+02:00",
+    "platform": "facebook",
+    "postId": "1485446367979150_122096630799550118",
+    "permalink": "https://www.facebook.com/122096628771550118/posts/122096630799550118",
+    "when": "2026-11-10T17:15:45.268Z"
+  },
+  {
+    "id": "2026-11-types-05-type-generator-fb#facebook",
+    "at": "2026-11-10T19:13:00+02:00",
+    "platform": "facebook",
+    "postId": "1485446367979150_122096631459550118",
+    "permalink": "https://www.facebook.com/122096628771550118/posts/122096631459550118",
+    "when": "2026-11-10T17:15:54.892Z"
   }
 ]
