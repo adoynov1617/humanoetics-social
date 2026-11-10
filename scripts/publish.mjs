@@ -16,7 +16,7 @@ const API = process.env.IG_API || 'https://graph.facebook.com/v23.0';
 const IG_USER_ID = process.env.IG_USER_ID || '17841466630713895'; // @humanoetics
 const FB_PAGE_ID = process.env.FB_PAGE_ID || '1485446367979150'; // Facebook страницата Humanoetics
 // Във Facebook публикуваме само това, което е насрочено след включването му.
-const FACEBOOK_FROM = Date.parse('2026-11-10T19:00:00+02:00');
+const FACEBOOK_FROM = Date.parse('2026-11-11T00:00:00+02:00');
 const STATE = path.join(ROOT, 'state', 'published.json');
 const LATE_LIMIT_H = 12; // по-стари пропуснати публикации не се пускат сами
 const CHECK = process.argv.includes('--check');
@@ -161,7 +161,8 @@ async function publishFacebook(it) {
 function tasksFor(it) {
   const platforms = it.platforms || (it.type === 'reel' ? ['instagram'] : ['instagram', 'facebook']);
   return platforms
-    .filter((pl) => pl !== 'facebook' || Date.parse(it.at) >= FACEBOOK_FROM)
+    // Изричното platforms важи винаги; иначе Facebook е само от FACEBOOK_FROM нататък.
+    .filter((pl) => pl !== 'facebook' || it.platforms || Date.parse(it.at) >= FACEBOOK_FROM)
     .map((pl) => ({ ...it, platform: pl, key: pl === 'instagram' ? it.id : `${it.id}#${pl}` }));
 }
 
