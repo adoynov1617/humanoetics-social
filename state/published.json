@@ -123,5 +123,21 @@
     "mediaId": "18652203541010868",
     "permalink": "https://www.instagram.com/stories/humanoetics/4027588783578604338",
     "when": "2026-11-10T21:27:13.720Z"
+  },
+  {
+    "id": "2026-11-w1-08-gate-27",
+    "at": "2026-11-11T09:13:00+02:00",
+    "platform": "instagram",
+    "mediaId": "17911977573604276",
+    "permalink": "https://www.instagram.com/stories/humanoetics/4027916599239204487",
+    "when": "2026-11-11T08:18:26.676Z"
+  },
+  {
+    "id": "2026-11-w1-08-gate-27#facebook",
+    "at": "2026-11-11T09:13:00+02:00",
+    "platform": "facebook",
+    "postId": "2186387098609451",
+    "permalink": null,
+    "when": "2026-11-11T08:18:34.179Z"
   }
 ]
