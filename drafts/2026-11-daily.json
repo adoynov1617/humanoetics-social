@@ -1,0 +1,156 @@
+[
+  {
+    "id": "2026-11-daily-2026-11-13-morning",
+    "at": "2026-11-13T08:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-13-1-morning.jpg"
+    ],
+    "note": "{\"sunGate\":43,\"sunSign\":\"Скорпион\",\"moonSign\":\"Козирог\",\"phase\":\"расте\",\"num\":7,\"earthGate\":23}"
+  },
+  {
+    "id": "2026-11-daily-2026-11-13-evening-movement",
+    "at": "2026-11-13T18:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-13-3-evening-movement.jpg"
+    ]
+  },
+  {
+    "id": "2026-11-daily-2026-11-14-morning",
+    "at": "2026-11-14T08:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-14-1-morning.jpg"
+    ],
+    "note": "{\"sunGate\":43,\"sunSign\":\"Скорпион\",\"moonSign\":\"Козирог\",\"phase\":\"расте\",\"num\":8,\"earthGate\":23}"
+  },
+  {
+    "id": "2026-11-daily-2026-11-15-morning",
+    "at": "2026-11-15T08:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-15-1-morning.jpg"
+    ],
+    "note": "{\"sunGate\":43,\"sunSign\":\"Скорпион\",\"moonSign\":\"Козирог\",\"phase\":\"расте\",\"num\":9,\"earthGate\":23}"
+  },
+  {
+    "id": "2026-11-daily-2026-11-15-evening-autumn-plate",
+    "at": "2026-11-15T18:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-15-3-evening-autumn-plate.jpg"
+    ]
+  },
+  {
+    "id": "2026-11-daily-2026-11-16-morning",
+    "at": "2026-11-16T08:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-16-1-morning.jpg"
+    ],
+    "note": "{\"sunGate\":43,\"sunSign\":\"Скорпион\",\"moonSign\":\"Водолей\",\"phase\":\"расте\",\"num\":1,\"earthGate\":23}"
+  },
+  {
+    "id": "2026-11-daily-2026-11-16-evening-sleep",
+    "at": "2026-11-16T18:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-16-3-evening-sleep.jpg"
+    ]
+  },
+  {
+    "id": "2026-11-daily-2026-11-17-morning",
+    "at": "2026-11-17T08:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-17-1-morning.jpg"
+    ],
+    "note": "{\"sunGate\":14,\"sunSign\":\"Скорпион\",\"moonSign\":\"Водолей\",\"phase\":\"първа четвърт\",\"num\":2,\"earthGate\":8}"
+  },
+  {
+    "id": "2026-11-daily-2026-11-18-morning",
+    "at": "2026-11-18T08:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-18-1-morning.jpg"
+    ],
+    "note": "{\"sunGate\":14,\"sunSign\":\"Скорпион\",\"moonSign\":\"Риби\",\"phase\":\"първа четвърт\",\"num\":3,\"earthGate\":8}"
+  },
+  {
+    "id": "2026-11-daily-2026-11-18-evening-personal-day",
+    "at": "2026-11-18T18:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-18-3-evening-personal-day.jpg"
+    ]
+  },
+  {
+    "id": "2026-11-daily-2026-11-19-morning",
+    "at": "2026-11-19T08:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-19-1-morning.jpg"
+    ],
+    "note": "{\"sunGate\":14,\"sunSign\":\"Скорпион\",\"moonSign\":\"Риби\",\"phase\":\"расте\",\"num\":22,\"earthGate\":8}"
+  },
+  {
+    "id": "2026-11-daily-2026-11-19-evening-evening-question",
+    "at": "2026-11-19T18:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-19-3-evening-evening-question.jpg"
+    ]
+  },
+  {
+    "id": "2026-11-daily-2026-11-20-morning",
+    "at": "2026-11-20T08:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-20-1-morning.jpg"
+    ],
+    "note": "{\"sunGate\":14,\"sunSign\":\"Скорпион\",\"moonSign\":\"Овен\",\"phase\":\"расте\",\"num\":5,\"earthGate\":8}"
+  },
+  {
+    "id": "2026-11-daily-2026-11-20-evening-sagittarius",
+    "at": "2026-11-20T18:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-20-3-evening-sagittarius.jpg"
+    ]
+  },
+  {
+    "id": "2026-11-daily-2026-11-21-morning",
+    "at": "2026-11-21T08:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-21-1-morning.jpg"
+    ],
+    "note": "{\"sunGate\":14,\"sunSign\":\"Скорпион\",\"moonSign\":\"Овен\",\"phase\":\"расте\",\"num\":6,\"earthGate\":8}"
+  },
+  {
+    "id": "2026-11-daily-2026-11-21-evening-moon",
+    "at": "2026-11-21T18:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-21-3-evening-moon.jpg"
+    ]
+  },
+  {
+    "id": "2026-11-daily-2026-11-22-morning",
+    "at": "2026-11-22T08:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-22-1-morning.jpg"
+    ],
+    "note": "{\"sunGate\":14,\"sunSign\":\"Стрелец\",\"moonSign\":\"Овен\",\"phase\":\"расте\",\"num\":7,\"earthGate\":8}"
+  },
+  {
+    "id": "2026-11-daily-2026-11-22-evening-sunday",
+    "at": "2026-11-22T18:43:00+02:00",
+    "type": "story",
+    "media": [
+      "2026-11-daily/2026-11-22-3-evening-sunday.jpg"
+    ]
+  }
+]
