@@ -55,7 +55,8 @@ function story([, topic, motif, thought, truth]) {
   return svgDoc(W, H, `${background(W, H, { seed: 2, glowY: 0.4 })}
     ${brand(X, 230, { size: 36 })}
     ${tw.svg}${spark}${l1}${b1.svg}${l2}${b2.svg}${m}
-    <text x="${X}" y="1560" font-family="Inter" font-size="30" fill="${C.inkFaint}">Виж своя дизайн · humanoetics.com</text>
+    <rect x="${X}" y="1500" width="640" height="76" rx="38" fill="${C.rose}"/>
+    <text x="${X + 320}" y="1550" text-anchor="middle" font-family="Inter" font-weight="600" font-size="31" fill="#FFFFFF">Виж своя дизайн · humanoetics.com</text>
     <text x="${W - X - 70}" y="1532" text-anchor="end" font-family="Inter" font-weight="500" font-size="26" letter-spacing="2" fill="${C.inkSoft}">ЗАПАЗИ ЗА</text>
     <text x="${W - X - 70}" y="1564" text-anchor="end" font-family="Inter" font-weight="500" font-size="26" letter-spacing="2" fill="${C.inkSoft}">ПОСЛЕ</text>
     ${bookmark(W - X - 46, 1506)}`);

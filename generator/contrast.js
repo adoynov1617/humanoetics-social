@@ -39,8 +39,9 @@ function chrome(n) {
   return `${num}
     <text x="${W - X - 110}" y="128" text-anchor="end" font-family="Inter" font-size="32" fill="${C.inkSoft}">Последвай за още</text>
     ${curlArrow(W - X - 96, 96, 1)}
-    ${brand(X, 1262, { size: 30 })}
-    <text x="${X}" y="1302" font-family="Inter" font-size="26" fill="${C.inkFaint}">@humanoetics · Human Design на български</text>
+    ${brand(X, 1252, { size: 30 })}
+    <rect x="${X}" y="1272" width="300" height="48" rx="24" fill="${C.rose}"/>
+    <text x="${X + 150}" y="1305" text-anchor="middle" font-family="Inter" font-weight="600" font-size="26" fill="#FFFFFF">humanoetics.com</text>
     <text x="${W - X - 70}" y="1262" text-anchor="end" font-family="Inter" font-weight="500" font-size="24" letter-spacing="2" fill="${C.inkSoft}">ЗАПАЗИ ЗА</text>
     <text x="${W - X - 70}" y="1292" text-anchor="end" font-family="Inter" font-weight="500" font-size="24" letter-spacing="2" fill="${C.inkSoft}">ПОСЛЕ</text>
     ${bookmark(W - X - 46, 1238)}`;
@@ -85,12 +86,25 @@ function cover() {
 }
 
 function cta() {
-  const p = (text, y, opts = {}) => textBlock(text, { x: X + 10, y, width: TW - 20, size: 42, color: C.ink, lineHeight: 1.35, ...opts });
-  const a = p('Искаш да разбереш кое от тези е за теб?', 360);
-  const b = p('Напиши „КАРТА“ в коментарите и ще ти изпратя линк към безплатната ти карта.', 360 + a.height + 60);
-  const c = p('Подходящо за всеки, който иска да спре да се бори със себе си.', 360 + a.height + b.height + 120, { color: C.inkSoft });
-  const d = p('P.S. Можеш да ми пишеш „КАРТА“ и в лични съобщения.', 360 + a.height + b.height + c.height + 200, { family: 'LoraItalic', size: 40, color: C.roseDeep });
-  return svgDoc(W, H, `${background(W, H, { seed: 4, glowY: 0.5 })}${chrome(0)}${a.svg}${b.svg}${c.svg}${d.svg}`);
+  let y = 300;
+  const t = textBlock('Искаш да видиш своя дизайн?', { x: W / 2, y, width: TW, size: 76, family: 'Lora', weight: 600, color: C.ink, anchor: 'middle', lineHeight: 1.1 });
+  y += t.height + 60;
+  const row = (label, text) => {
+    const body = textBlock(text, { x: X + 40, y: y + 66, width: TW - 80, size: 36, color: C.inkSoft, lineHeight: 1.32 });
+    const h = 66 + body.height + 34;
+    const out = `<rect x="${X}" y="${y}" width="${TW}" height="${h}" rx="24" fill="none" stroke="${C.ink}" stroke-width="4"/>
+      <text x="${X + 40}" y="${y + 54}" font-family="Lora" font-style="italic" font-weight="600" font-size="40" fill="${C.roseDeep}">${label}</text>${body.svg}`;
+    y += h + 30;
+    return out;
+  };
+  const r1 = row('Безплатно', 'Твоята карта (бодиграф), типът и стратегията ти – за 1 минута.');
+  const r2 = row('Пълен анализ · 24 €', 'Подробен личен анализ на твоя дизайн, готов веднага като PDF.');
+  y += 20;
+  const site = `<rect x="${W / 2 - 300}" y="${y}" width="600" height="104" rx="52" fill="${C.rose}"/>
+    <text x="${W / 2}" y="${y + 68}" text-anchor="middle" font-family="Inter" font-weight="600" font-size="48" fill="#FFFFFF">humanoetics.com</text>`;
+  y += 150;
+  const note = textBlock('Линкът е в профила · или напиши „КАРТА“ в коментарите', { x: W / 2, y, width: TW, size: 30, family: 'LoraItalic', color: C.roseDeep, anchor: 'middle' });
+  return svgDoc(W, H, `${background(W, H, { seed: 4, glowY: 0.5 })}${chrome(0)}${t.svg}${r1}${r2}${site}${note.svg}`);
 }
 
 const files = [];
