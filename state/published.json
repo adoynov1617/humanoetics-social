@@ -267,5 +267,21 @@
     "postId": "4711684752487532",
     "permalink": null,
     "when": "2026-11-16T08:39:24.828Z"
+  },
+  {
+    "id": "2026-11-w2-3-10-quiz-not-self",
+    "at": "2026-11-17T09:13:00+02:00",
+    "platform": "instagram",
+    "mediaId": "18655229596025181",
+    "permalink": "https://www.instagram.com/stories/humanoetics/4032348341514302249",
+    "when": "2026-11-17T11:03:35.936Z"
+  },
+  {
+    "id": "2026-11-w2-3-10-quiz-not-self#facebook",
+    "at": "2026-11-17T09:13:00+02:00",
+    "platform": "facebook",
+    "postId": "1457884326453886",
+    "permalink": null,
+    "when": "2026-11-17T11:03:44.127Z"
   }
 ]
