@@ -15,7 +15,6 @@ const H = 1920;
 const X = 80;
 const TW = W - 2 * X;
 const OUT = process.argv[2] || path.join(__dirname, '..', 'out-contrast-stories');
-fs.mkdirSync(OUT, { recursive: true });
 
 const STORIES = [
   ['sakralen', 'Сакрален авторитет', { defined: ['sacral'] }, '„Не мога да обясня защо го искам.“', 'Не е нужно. Тялото ти знае преди ума – довери се на онова „ъхъ“.'],
@@ -62,10 +61,15 @@ function story([, topic, motif, thought, truth]) {
     ${bookmark(W - X - 46, 1506)}`);
 }
 
-for (const s of STORIES) {
-  const png = path.join(OUT, `story-contrast-${s[0]}.png`);
-  fs.writeFileSync(png, toPng(story(s), W));
-  execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', png, '-q:v', '2', png.replace(/\.png$/, '.jpg')]);
-  fs.unlinkSync(png);
+module.exports = { story, STORIES };
+
+if (require.main === module) {
+  fs.mkdirSync(OUT, { recursive: true });
+  for (const s of STORIES) {
+    const png = path.join(OUT, `story-contrast-${s[0]}.png`);
+    fs.writeFileSync(png, toPng(story(s), W));
+    execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', png, '-q:v', '2', png.replace(/\.png$/, '.jpg')]);
+    fs.unlinkSync(png);
+  }
+  console.log(`ok: ${STORIES.length} сторита → ${OUT}`);
 }
-console.log(`ok: ${STORIES.length} сторита → ${OUT}`);

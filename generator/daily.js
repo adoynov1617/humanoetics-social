@@ -24,7 +24,7 @@ const H = 1920;
 const X = 110;
 const TW = W - 2 * X;
 const TZ = 'Europe/Sofia';
-fs.mkdirSync(OUT, { recursive: true });
+if (require.main === module) fs.mkdirSync(OUT, { recursive: true });
 
 const SIGN_BG = { Aries: 'Овен', Taurus: 'Телец', Gemini: 'Близнаци', Cancer: 'Рак', Leo: 'Лъв', Virgo: 'Дева', Libra: 'Везни', Scorpio: 'Скорпион', Sagittarius: 'Стрелец', Capricorn: 'Козирог', Aquarius: 'Водолей', Pisces: 'Риби' };
 const DAY_NUM = {
@@ -204,20 +204,24 @@ function moonStory(iso) {
   };
 }
 
-const [from, to] = [process.argv[2] || '2026-11-13', process.argv[3] || '2026-11-22'];
-const items = [];
-for (let d = new Date(`${from}T12:00:00Z`); d <= new Date(`${to}T12:00:00Z`); d = new Date(d.getTime() + 864e5)) {
-  const iso = d.toISOString().slice(0, 10);
-  const m = morning(iso);
-  items.push({ id: `${SET}-${iso}-morning`, at: `${iso}T08:43:00+02:00`, type: 'story', media: [jpg(m.svg, `${iso}-1-morning.jpg`)], note: JSON.stringify(m.meta) });
-  let ev = EVENING[iso];
-  if (ev && ev.id === 'moon') ev = moonStory(iso);
-  if (ev) items.push({ id: `${SET}-${iso}-evening-${ev.id}`, at: `${iso}T18:43:00+02:00`, type: 'story', media: [jpg(listStory(ev), `${iso}-3-evening-${ev.id}.jpg`)] });
+module.exports = { morning, listStory, moonStory, EVENING, sky };
+
+if (require.main === module) {
+  const [from, to] = [process.argv[2] || '2026-11-13', process.argv[3] || '2026-11-22'];
+  const items = [];
+  for (let d = new Date(`${from}T12:00:00Z`); d <= new Date(`${to}T12:00:00Z`); d = new Date(d.getTime() + 864e5)) {
+    const iso = d.toISOString().slice(0, 10);
+    const m = morning(iso);
+    items.push({ id: `${SET}-${iso}-morning`, at: `${iso}T08:43:00+02:00`, type: 'story', media: [jpg(m.svg, `${iso}-1-morning.jpg`)], note: JSON.stringify(m.meta) });
+    let ev = EVENING[iso];
+    if (ev && ev.id === 'moon') ev = moonStory(iso);
+    if (ev) items.push({ id: `${SET}-${iso}-evening-${ev.id}`, at: `${iso}T18:43:00+02:00`, type: 'story', media: [jpg(listStory(ev), `${iso}-3-evening-${ev.id}.jpg`)] });
+  }
+  // Обедните сторита „Порталът на деня“ стават „Опознай порталите“ – „денят“ вече е Слънцето.
+  for (const n of [59, 53, 34, 45, 48, 28, 62, 35]) {
+    const svg = T.gateStory({ ...L.gateOfDay(n), footer: 'Имаш ли го в картата си?' }).replace('ПОРТАЛЪТ НА ДЕНЯ', 'ОПОЗНАЙ ПОРТАЛИТЕ');
+    jpg(svg, `midday-gate-${n}.jpg`);
+  }
+  fs.writeFileSync(path.join(ROOT, 'drafts', `${SET}.json`), JSON.stringify(items, null, 2) + '\n');
+  console.log(`ok: ${items.length} сторита (сутрин + вечер), 8 обедни портала`);
 }
-// Обедните сторита „Порталът на деня“ стават „Опознай порталите“ – „денят“ вече е Слънцето.
-for (const n of [59, 53, 34, 45, 48, 28, 62, 35]) {
-  const svg = T.gateStory({ ...L.gateOfDay(n), footer: 'Имаш ли го в картата си?' }).replace('ПОРТАЛЪТ НА ДЕНЯ', 'ОПОЗНАЙ ПОРТАЛИТЕ');
-  jpg(svg, `midday-gate-${n}.jpg`);
-}
-fs.writeFileSync(path.join(ROOT, 'drafts', `${SET}.json`), JSON.stringify(items, null, 2) + '\n');
-console.log(`ok: ${items.length} сторита (сутрин + вечер), 8 обедни портала`);
