@@ -491,5 +491,37 @@
     "postId": "2222537241663461",
     "permalink": null,
     "when": "2026-11-20T21:02:40.003Z"
+  },
+  {
+    "id": "2026-11-5aday-2026-11-21-1-den",
+    "at": "2026-11-21T08:43:00+02:00",
+    "platform": "instagram",
+    "mediaId": "17913912840311236",
+    "permalink": "https://www.instagram.com/stories/humanoetics/4035205290643572978",
+    "when": "2026-11-21T09:39:45.929Z"
+  },
+  {
+    "id": "2026-11-5aday-2026-11-21-1-den#facebook",
+    "at": "2026-11-21T08:43:00+02:00",
+    "platform": "facebook",
+    "postId": "1247172374670649",
+    "permalink": null,
+    "when": "2026-11-21T09:39:50.964Z"
+  },
+  {
+    "id": "2026-11-w2-3-15-gate-62",
+    "at": "2026-11-21T09:13:00+02:00",
+    "platform": "instagram",
+    "mediaId": "18051166775821132",
+    "permalink": "https://www.instagram.com/stories/humanoetics/4035205417016523812",
+    "when": "2026-11-21T09:39:59.852Z"
+  },
+  {
+    "id": "2026-11-w2-3-15-gate-62#facebook",
+    "at": "2026-11-21T09:13:00+02:00",
+    "platform": "facebook",
+    "postId": "1816139906372256",
+    "permalink": null,
+    "when": "2026-11-21T09:40:04.890Z"
   }
 ]
