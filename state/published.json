@@ -731,5 +731,37 @@
     "postId": "2739197836499108",
     "permalink": null,
     "when": "2026-11-23T13:08:40.315Z"
+  },
+  {
+    "id": "2026-11-5aday-2026-11-23-4-vapros",
+    "at": "2026-11-23T16:43:00+02:00",
+    "platform": "instagram",
+    "mediaId": "18104209193387416",
+    "permalink": "https://www.instagram.com/stories/humanoetics/4037117985113593889",
+    "when": "2026-11-24T01:00:02.573Z"
+  },
+  {
+    "id": "2026-11-5aday-2026-11-23-4-vapros#facebook",
+    "at": "2026-11-23T16:43:00+02:00",
+    "platform": "facebook",
+    "postId": "2053056885358138",
+    "permalink": null,
+    "when": "2026-11-24T01:00:08.642Z"
+  },
+  {
+    "id": "2026-11-5aday-2026-11-23-6-otgovor",
+    "at": "2026-11-23T21:13:00+02:00",
+    "platform": "instagram",
+    "mediaId": "18139563805671801",
+    "permalink": "https://www.instagram.com/stories/humanoetics/4037118169906248826",
+    "when": "2026-11-24T01:00:24.428Z"
+  },
+  {
+    "id": "2026-11-5aday-2026-11-23-6-otgovor#facebook",
+    "at": "2026-11-23T21:13:00+02:00",
+    "platform": "facebook",
+    "postId": "2316088205998036",
+    "permalink": null,
+    "when": "2026-11-24T01:00:30.284Z"
   }
 ]
